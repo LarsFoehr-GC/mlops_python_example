@@ -11,3 +11,5 @@ get dependencies: python -m pip install -r requirements.txt
 install packages with pip install PACKAGE
 
 Add package to dependencies: python -m pip freeze > requirements.txt
+
+dsd
