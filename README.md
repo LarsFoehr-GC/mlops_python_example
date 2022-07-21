@@ -1,5 +1,5 @@
 # mlops_python_example
-Example MLOps workflow with Python. 
+Example MLOps workflow with Python.
 
 ## Ongoing Documentation
 
@@ -11,3 +11,5 @@ get dependencies: python -m pip install -r requirements.txt
 install packages with pip install PACKAGE
 
 Add package to dependencies: python -m pip freeze > requirements.txt
+
+To install pre-commit: pre-commit install
