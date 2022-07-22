@@ -1,0 +1,31 @@
+schema: '2.0'
+stages:
+  preprocess_data:
+    cmd: python3 src/preprocess_data.py data/diabetes.csv --force
+    deps:
+    - path: data/diabetes.csv
+      md5: b43dd020fa775d93fced49f959c227ed
+      size: 23873
+    - path: src/preprocess_data.py
+      md5: 8df2307102a2689becc4dd772c4511da
+      size: 1521
+    outs:
+    - path: data/diabetes_preprocessed.csv
+      md5: 86d746e594bbfe454b593dddfb75c884
+      size: 21203
+  training:
+    cmd: python3 src/train.py data/diabetes_preprocessed.csv src/model.py
+    deps:
+    - path: data/diabetes_preprocessed.csv
+      md5: 86d746e594bbfe454b593dddfb75c884
+      size: 21203
+    - path: src/model.py
+      md5: ea5cb73ef935732da8589d08cd462006
+      size: 4589
+    - path: src/train.py
+      md5: c85f6ffa6429f830ed63170e14b1fa56
+      size: 739
+    outs:
+    - path: models/model.joblib
+      md5: 6d948dfada834a51920ac8225b07430c
+      size: 1812

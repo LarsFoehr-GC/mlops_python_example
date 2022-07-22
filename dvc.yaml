@@ -1,0 +1,16 @@
+stages:
+  preprocess_data:
+    cmd: python3 src/preprocess_data.py data/diabetes.csv --force
+    deps:
+    - data/diabetes.csv
+    - src/preprocess_data.py
+    outs:
+    - data/diabetes_preprocessed.csv
+  training:
+    cmd: python3 src/train.py data/diabetes_preprocessed.csv src/model.py
+    deps:
+    - data/diabetes_preprocessed.csv
+    - src/model.py
+    - src/train.py
+    outs:
+    - models/model.joblib

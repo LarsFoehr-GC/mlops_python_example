@@ -13,13 +13,3 @@ install packages with pip install PACKAGE
 Add package to dependencies: python -m pip freeze > requirements.txt
 
 To install pre-commit: pre-commit install
-
-
-# Work with dvc
-
-## Get connection
-
-## Experiment
-- dvc pull
-- dvc run ...
-- dvc push
