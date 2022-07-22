@@ -1,0 +1,5 @@
+[core]
+    remote = diabetes
+['remote "diabetes"']
+    url = azure://diabetes
+    account_name = mlopspythonexample
