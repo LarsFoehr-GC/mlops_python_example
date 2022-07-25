@@ -1,27 +1,27 @@
 stages:
   preprocess_data:
-    cmd: python3 src/preprocess_data.py data/diabetes.csv --force
+    cmd: python3 classification_model/preprocess_data.py data/diabetes.csv --force
     deps:
     - data/diabetes.csv
-    - src/preprocess_data.py
+    - classification_model/preprocess_data.py
     outs:
     - data/diabetes_preprocessed.csv
   training:
-    cmd: python3 src/train.py data/diabetes_preprocessed.csv src/model.py
+    cmd: python3 classification_model/train.py data/diabetes_preprocessed.csv classification_model/model.py
     deps:
     - data/diabetes_preprocessed.csv
-    - src/model.py
-    - src/train.py
+    - classification_model/model.py
+    - classification_model/train.py
     outs:
     - models/model.joblib
   evaluation:
-    cmd: python3 ./src/evaluate.py ./data/diabetes_preprocessed.csv ./src/model.py
+    cmd: python3 ./classification_model/evaluate.py ./data/diabetes_preprocessed.csv ./classification_model/model.py
       ./models/model.joblib
     deps:
     - ./data/diabetes_preprocessed.csv
     - ./models/model.joblib
-    - ./src/evaluate.py
-    - ./src/model.py
+    - ./classification_model/evaluate.py
+    - ./classification_model/model.py
     metrics:
     - ./results/metrics.json:
         cache: false

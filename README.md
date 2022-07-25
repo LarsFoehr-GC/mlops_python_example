@@ -14,6 +14,7 @@ Add package to dependencies: python -m pip freeze > requirements.txt
 
 To install pre-commit: pre-commit install
 
+To set PYTHONPATH inside venv: export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 # Work with dvc
 
@@ -32,3 +33,8 @@ To install pre-commit: pre-commit install
 - Think about Model monitoring
 - Think about automatic retraining the model
 - Refactoring: Writte better modules and functions!
+- Better work with paths!
+
+# Fast API
+https://fastapi.tiangolo.com/#run-it
+https://fastapi.tiangolo.com/deployment/docker/
