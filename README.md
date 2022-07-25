@@ -32,7 +32,7 @@ To set PYTHONPATH inside venv: export PYTHONPATH=$PYTHONPATH:$(pwd)
 - Write better tests
 - Think about Model monitoring
 - Think about automatic retraining the model
-- Refactoring: Writte better modules and functions!
+- Refactoring: Write better modules and functions!
 - Better work with paths!
 
 # Fast API
