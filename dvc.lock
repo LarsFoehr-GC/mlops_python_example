@@ -1,50 +1,50 @@
 schema: '2.0'
 stages:
   preprocess_data:
-    cmd: python3 src/preprocess_data.py data/diabetes.csv --force
+    cmd: python3 classification_model/preprocess_data.py data/diabetes.csv --force
     deps:
+    - path: classification_model/preprocess_data.py
+      md5: ba228bbe93e14c5223c85e84fca9e1ce
+      size: 1325
     - path: data/diabetes.csv
       md5: b43dd020fa775d93fced49f959c227ed
       size: 23873
-    - path: src/preprocess_data.py
-      md5: ba228bbe93e14c5223c85e84fca9e1ce
-      size: 1325
     outs:
     - path: data/diabetes_preprocessed.csv
       md5: 86d746e594bbfe454b593dddfb75c884
       size: 21203
   training:
-    cmd: python3 src/train.py data/diabetes_preprocessed.csv src/model.py
+    cmd: python3 classification_model/train.py data/diabetes_preprocessed.csv classification_model/model.py
     deps:
+    - path: classification_model/model.py
+      md5: 20f79ea4df5af9ab1af51ed969e41689
+      size: 4513
+    - path: classification_model/train.py
+      md5: eeeaa65610af583dba75c9f99973ee11
+      size: 1253
     - path: data/diabetes_preprocessed.csv
       md5: 86d746e594bbfe454b593dddfb75c884
       size: 21203
-    - path: src/model.py
-      md5: 20f79ea4df5af9ab1af51ed969e41689
-      size: 4513
-    - path: src/train.py
-      md5: 83bf6534fff70b4aa746d4a4dd9b41de
-      size: 995
     outs:
     - path: models/model.joblib
       md5: 6d948dfada834a51920ac8225b07430c
       size: 1812
   evaluation:
-    cmd: python3 ./src/evaluate.py ./data/diabetes_preprocessed.csv ./src/model.py
-      ./models/model.joblib
+    cmd: python3 ./classification_model/evaluate.py ./data/diabetes_preprocessed.csv
+      ./classification_model/model.py ./models/model.joblib
     deps:
+    - path: ./classification_model/evaluate.py
+      md5: cc4fa2369bec6717d881c3be8e20cf9e
+      size: 1240
+    - path: ./classification_model/model.py
+      md5: 20f79ea4df5af9ab1af51ed969e41689
+      size: 4513
     - path: ./data/diabetes_preprocessed.csv
       md5: 86d746e594bbfe454b593dddfb75c884
       size: 21203
     - path: ./models/model.joblib
       md5: 6d948dfada834a51920ac8225b07430c
       size: 1812
-    - path: ./src/evaluate.py
-      md5: 83a79d9ee800e6719b886b7102648206
-      size: 982
-    - path: ./src/model.py
-      md5: 20f79ea4df5af9ab1af51ed969e41689
-      size: 4513
     outs:
     - path: ./results/metrics.json
       md5: e5d85f65a4b4bc221f88b2cda65db202
