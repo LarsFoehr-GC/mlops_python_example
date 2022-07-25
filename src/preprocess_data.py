@@ -11,8 +11,6 @@ import pandas as pd
 import sys
 import typing
 
-from util.logger import define_logger
-
 # Build logger
 logging.basicConfig(
     format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG

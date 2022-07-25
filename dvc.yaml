@@ -14,3 +14,14 @@ stages:
     - src/train.py
     outs:
     - models/model.joblib
+  evaluation:
+    cmd: python3 ./src/evaluate.py ./data/diabetes_preprocessed.csv ./src/model.py
+      ./models/model.joblib
+    deps:
+    - ./data/diabetes_preprocessed.csv
+    - ./models/model.joblib
+    - ./src/evaluate.py
+    - ./src/model.py
+    metrics:
+    - ./results/metrics.json:
+        cache: false

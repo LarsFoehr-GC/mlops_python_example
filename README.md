@@ -23,3 +23,12 @@ To install pre-commit: pre-commit install
 - dvc pull
 - dvc run ...
 - dvc push
+
+## To Do's:
+- pre-commit with mypy but only for important modules
+- Explain DVC in README
+- Explain whole workflow
+- Write better tests
+- Think about Model monitoring
+- Think about automatic retraining the model
+- Refactoring: Writte better modules and functions!
