@@ -3,6 +3,15 @@
 The model is imported and then used to makes predictions for newly delivered data.
 
 """
+
+import logging
+
+logging.basicConfig(
+    format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
+)
+logger = logging.getLogger(__name__)
+logger.info("App läuft")
+
 from fastapi import FastAPI
 from joblib import load
 from typing import Dict
@@ -38,7 +47,7 @@ def health() -> Dict:
 def predict(params: ModelParams) -> Dict:
 
     # Load the model
-    MODEL_PATH = "/Users/larsmoller/Desktop/Aktuell/MLOps_UseCases/Praxis_Projekte/mlops_python_example/models/model.joblib"
+    MODEL_PATH = "./models/model.joblib"
     classifier_model = load(MODEL_PATH)
 
     pred = get_prediction(
