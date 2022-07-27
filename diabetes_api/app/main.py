@@ -3,14 +3,19 @@
 The model is imported and then used to makes predictions for newly delivered data.
 
 """
-
+from fastapi.logger import logger
 import logging
 
-logging.basicConfig(
-    format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
-)
-logger = logging.getLogger(__name__)
+gunicorn_logger = logging.getLogger("gunicorn.error")
+logger.handlers = gunicorn_logger.handlers
+logger.setLevel(gunicorn_logger.level)
 logger.info("App läuft")
+
+# logging.basicConfig(
+#    format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
+# )
+# logger = logging.getLogger(__name__)
+# logger.info("App läuft")
 
 from fastapi import FastAPI
 from joblib import load
