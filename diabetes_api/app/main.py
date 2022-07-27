@@ -23,7 +23,22 @@ from diabetes_api.schemas import Health, ModelParams
 from models import __version__ as model_version
 
 # Start FastAPI
-app = FastAPI()
+
+description = """
+Diabetes Prediction API helps to predict Diabetes. 🚀
+
+## Sites
+
+Right now there are three sites.
+
+* **Root** : Gives feedback whether or not the API works.
+* **/health** : Shows information about the API.
+* **/predict** : Prediction site.
+"""
+
+app = FastAPI(
+    title="Diabetes Prediction API", description=description, version=app_version
+)
 
 
 @app.get("/")
