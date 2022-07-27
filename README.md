@@ -37,4 +37,8 @@ To set PYTHONPATH inside venv: export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 # Fast API
 https://fastapi.tiangolo.com/#run-it
+
 https://fastapi.tiangolo.com/deployment/docker/
+
+# Azure Deployment
+https://towardsdatascience.com/deploy-fastapi-on-azure-with-github-actions-32c5ab248ce3
