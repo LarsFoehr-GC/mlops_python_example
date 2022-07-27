@@ -1,13 +1,6 @@
 """ This modul contains the function(s) to predict the output of new data.
 
 """
-from fastapi.logger import logger
-import logging
-
-gunicorn_logger = logging.getLogger("gunicorn.error")
-logger.handlers = gunicorn_logger.handlers
-logger.setLevel(gunicorn_logger.level)
-
 from sklearn.pipeline import Pipeline
 from typing import Dict
 
@@ -37,8 +30,6 @@ def get_prediction(
         Dictionary containing predictions and probaility predictions.
 
     """
-    logger.info("Prediction beginnt ...")
-
     x = [[preg, gluco, bp, ins, bmi, dpf, age]]
 
     y = clf_model.predict(x)[0]  # just get single value
