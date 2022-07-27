@@ -38,7 +38,6 @@ jobs:
       with:
         app-name: 'mlops-py-fastapi'
         images: 'mlopspythonexample.azurecr.io/mlops_py_container:${{ github.sha }}'
-        slot-name: 'staging'
 
 
     - name: Azure logout
