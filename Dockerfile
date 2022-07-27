@@ -8,6 +8,7 @@ WORKDIR /code
 COPY . /code/
 
 # Install dependencies
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Run the app via uvicorn
