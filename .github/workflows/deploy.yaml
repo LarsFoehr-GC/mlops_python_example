@@ -1,0 +1,46 @@
+name: Build and deploy to production
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout GitHub Actions
+      uses: actions/checkout@main
+
+
+    - name: Login via Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+    - name: Login to Azure Container Registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: mlopspythonexample.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+
+    - name: Build and push container image to registry
+      run: |
+        docker build . -t mlopspythonexample.azurecr.io/mlops_py_container:${{ github.sha }}
+        docker push mlopspythonexample.azurecr.io/mlops_py_container:${{ github.sha }}
+
+
+    - name: Deploy to App Service
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'mlops-py-fastapi'
+        images: 'mlopspythonexample.azurecr.io/mlops_py_container:${{ github.sha }}'
+        slot-name: 'staging'
+
+
+    - name: Azure logout
+      run: |
+        az logout
