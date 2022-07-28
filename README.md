@@ -41,6 +41,12 @@ https://fastapi.tiangolo.com/#run-it
 https://fastapi.tiangolo.com/deployment/docker/
 
 # Docker
+Fast API is called via Docker. The specification of the Docker Image can be found in the Dockerfile.
+
+## Download
+Before you can actually use Docker, you have to download it: [Link](https://www.docker.com/products/docker-desktop/)
+
+## Examples to build and run and the image on localhost
 docker build -t mlops_py_image .
 docker run -d --name mlops_py_container -p 80:80 mlops_py_image
 
