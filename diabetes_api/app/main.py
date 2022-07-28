@@ -4,10 +4,12 @@ The model is imported and then used to makes predictions for newly delivered dat
 
 """
 from fastapi import FastAPI
-from fastapi.logger import logger
+import inspect
 from joblib import load
 import logging
+import os
 from typing import Dict
+from pathlib import Path
 
 from classification_model.predict import get_prediction
 from diabetes_api.app import __version__ as app_version
@@ -15,16 +17,14 @@ from diabetes_api.app.config import PROJECT_NAME
 from diabetes_api.schemas import Health, ModelParams
 from models import __version__ as model_version
 
-# gunicorn_logger = logging.getLogger("gunicorn.error")
-# logger.handlers = gunicorn_logger.handlers
-# logger.setLevel(gunicorn_logger.level)
-# logger.info("App läuft")
-
 logging.basicConfig(
     format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
 )
 logger = logging.getLogger(__name__)
 logger.info("App läuft")
+
+cwd = os.getcwd()
+logger.info("Aktueller Pfad: %s", cwd)
 
 # Start FastAPI
 
@@ -66,7 +66,7 @@ def health() -> Dict:
 def predict(params: ModelParams) -> Dict:
 
     # Load the model
-    MODEL_PATH = "././models/model.joblib"
+    MODEL_PATH = "./models/model.joblib"
     classifier_model = load(MODEL_PATH)
 
     pred = get_prediction(
