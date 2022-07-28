@@ -17,8 +17,13 @@ To install pre-commit: pre-commit install
 To set PYTHONPATH inside venv: export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 # Work with dvc
-
 ## Get connection
+
+## Build of the pipeline
+The following commands were used to build the pipeline:
+
+- dvc run -n preprocess -d classification_model/process_raw_data.py -d data/diabetes_raw.csv -o ./data/diabetes_raw_processed.csv python3 ./classification_model/process_raw_data.py
+- dvc run -n split_preprocess -d classification_model/split_preprocess.py -d data/diabetes_raw_processed.csv -o data/X_train.csv -o data/X_test.csv -o data/y_train.csv -o data/y_test.csv python3 classification_model/split_preprocess.py
 
 ## Experiment
 - dvc pull

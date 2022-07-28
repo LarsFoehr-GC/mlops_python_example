@@ -6,3 +6,13 @@ stages:
     - data/diabetes_raw.csv
     outs:
     - ./data/diabetes_raw_processed.csv
+  split_preprocess:
+    cmd: python3 classification_model/split_preprocess.py
+    deps:
+    - classification_model/split_preprocess.py
+    - data/diabetes_raw_processed.csv
+    outs:
+    - data/X_test.csv
+    - data/X_train.csv
+    - data/y_test.csv
+    - data/y_train.csv

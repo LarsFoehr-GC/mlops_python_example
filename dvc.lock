@@ -59,3 +59,25 @@ stages:
     - path: ./data/diabetes_raw_processed.csv
       md5: 86d746e594bbfe454b593dddfb75c884
       size: 21203
+  split_preprocess:
+    cmd: python3 classification_model/split_preprocess.py
+    deps:
+    - path: classification_model/split_preprocess.py
+      md5: 6f783fd38417787b5f0e294c835a551f
+      size: 3236
+    - path: data/diabetes_raw_processed.csv
+      md5: 86d746e594bbfe454b593dddfb75c884
+      size: 21203
+    outs:
+    - path: data/X_test.csv
+      md5: e1d82a260c6ed417781af371c3210543
+      size: 41372
+    - path: data/X_train.csv
+      md5: 8ffa2389be7a44c828d7d7a06f9875b5
+      size: 96017
+    - path: data/y_test.csv
+      md5: d81ff79e5fc1df2a347ced818a78e78b
+      size: 470
+    - path: data/y_train.csv
+      md5: 9d4504d5b7bff8fab6b44515aad9435a
+      size: 1082

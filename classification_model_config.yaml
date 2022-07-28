@@ -3,3 +3,10 @@ preprocess_data:
     - "SkinThickness"
   data_in_path: "data/diabetes_raw.csv"
   data_in_out: "data/diabetes_raw_processed.csv"
+split_preprocess:
+  data_in_path: "data/diabetes_raw_processed.csv"
+  y_feature: "Outcome"
+  X_train_out_path: "data/X_train.csv"
+  X_test_out_path: "data/X_test.csv"
+  y_train_out_path: "data/y_train.csv"
+  y_test_out_path: "data/y_test.csv"
