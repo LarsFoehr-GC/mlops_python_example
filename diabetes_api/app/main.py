@@ -18,13 +18,13 @@ from models import __version__ as model_version
 
 # Build logger
 logging.basicConfig(
-    format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
+    format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.ERROR
 )
 logger = logging.getLogger(__name__)
-logger.info("App läuft")
+logger.error("App läuft")
 
 cwd = os.getcwd()
-logger.info("Aktueller Pfad: %s", cwd)
+logger.error("Aktueller Pfad: %s", cwd)
 
 # Start FastAPI
 
@@ -66,9 +66,12 @@ def health() -> Dict:
 def predict(params: ModelParams) -> Dict:
 
     # Load the model
+
+    logger.error("Modell Pfad: %s", glob.glob("**/model.joblib", recursive=True))
+
     MODEL_PATH = glob.glob("**/model.joblib", recursive=True)[0]
 
-    logger.info("Modell Pfad: %s", MODEL_PATH)
+    logger.error("Modell Pfad: %s", MODEL_PATH)
 
     classifier_model = load(MODEL_PATH)
 
