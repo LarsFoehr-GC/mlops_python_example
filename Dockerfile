@@ -11,5 +11,8 @@ COPY . /code/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
+# DVC Pull
+RUN dvc pull
+
 # Run the app via uvicorn
 CMD ["uvicorn", "diabetes_api.app.main:app", "--host", "0.0.0.0", "--port", "80"]
