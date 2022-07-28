@@ -1,0 +1,5 @@
+preprocess_data:
+  cols_to_be_removed:
+    - "SkinThickness"
+  data_in_path: "data/diabetes_raw.csv"
+  data_in_out: "data/diabetes_raw_processed.csv"

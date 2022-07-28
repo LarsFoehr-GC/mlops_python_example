@@ -46,3 +46,16 @@ stages:
     - path: ./results/metrics.json
       md5: e5d85f65a4b4bc221f88b2cda65db202
       size: 110
+  preprocess:
+    cmd: python3 ./classification_model/process_raw_data.py
+    deps:
+    - path: classification_model/process_raw_data.py
+      md5: 6e46f97a2838b814fc2dfe54298a3958
+      size: 1685
+    - path: data/diabetes_raw.csv
+      md5: b43dd020fa775d93fced49f959c227ed
+      size: 23873
+    outs:
+    - path: ./data/diabetes_raw_processed.csv
+      md5: 86d746e594bbfe454b593dddfb75c884
+      size: 21203
