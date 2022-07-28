@@ -42,9 +42,6 @@ stages:
     - path: ./data/diabetes_preprocessed.csv
       md5: 86d746e594bbfe454b593dddfb75c884
       size: 21203
-    - path: ./models/model.joblib
-      md5: 6d948dfada834a51920ac8225b07430c
-      size: 1812
     outs:
     - path: ./results/metrics.json
       md5: e5d85f65a4b4bc221f88b2cda65db202

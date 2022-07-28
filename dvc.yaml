@@ -12,14 +12,13 @@ stages:
     - data/diabetes_preprocessed.csv
     - classification_model/model.py
     - classification_model/train.py
-    outs:
-    - models/model.joblib
+    # outs:
+    # - models/model.joblib
   evaluation:
-    cmd: python3 ./classification_model/evaluate.py ./data/diabetes_preprocessed.csv ./classification_model/model.py
-      ./models/model.joblib
+    cmd: python3 ./classification_model/evaluate.py ./data/diabetes_preprocessed.csv ./classification_model/model.py ./models/model.joblib
     deps:
     - ./data/diabetes_preprocessed.csv
-    - ./models/model.joblib
+    # - ./models/model.joblib
     - ./classification_model/evaluate.py
     - ./classification_model/model.py
     metrics:
