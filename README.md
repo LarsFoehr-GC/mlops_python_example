@@ -40,5 +40,9 @@ https://fastapi.tiangolo.com/#run-it
 
 https://fastapi.tiangolo.com/deployment/docker/
 
+# Docker
+docker build -t mlops_py_image .
+docker run -d --name mlops_py_container -p 80:80 mlops_py_image
+
 # Azure Deployment
 https://towardsdatascience.com/deploy-fastapi-on-azure-with-github-actions-32c5ab248ce3

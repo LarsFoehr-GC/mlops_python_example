@@ -4,12 +4,11 @@ The model is imported and then used to makes predictions for newly delivered dat
 
 """
 from fastapi import FastAPI
-import inspect
+import glob
 from joblib import load
 import logging
 import os
 from typing import Dict
-from pathlib import Path
 
 from classification_model.predict import get_prediction
 from diabetes_api.app import __version__ as app_version
@@ -17,6 +16,7 @@ from diabetes_api.app.config import PROJECT_NAME
 from diabetes_api.schemas import Health, ModelParams
 from models import __version__ as model_version
 
+# Build logger
 logging.basicConfig(
     format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
 )
@@ -66,7 +66,10 @@ def health() -> Dict:
 def predict(params: ModelParams) -> Dict:
 
     # Load the model
-    MODEL_PATH = "./models/model.joblib"
+    MODEL_PATH = glob.glob("**/model.joblib", recursive=True)[0]
+
+    logger.info("Modell Pfad: %s", MODEL_PATH)
+
     classifier_model = load(MODEL_PATH)
 
     pred = get_prediction(
