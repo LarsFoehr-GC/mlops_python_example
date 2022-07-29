@@ -3,6 +3,7 @@
 """
 import numpy as np
 import pandas as pd
+from joblib import dump
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -36,13 +37,14 @@ def get_variables(data: pd.DataFrame, y_feature: str) -> Tuple[pd.DataFrame, pd.
 
 
 def preprocess_data(
-    X_train: pd.DataFrame, X_test: pd.DataFrame
+    X_train: pd.DataFrame, X_test: pd.DataFrame, pipe_out_path: str
 ) -> Tuple[np.array, np.array]:
     """Preprocess the already processed raw data, to make it ready for the ML model.
 
     Args:
         X_train (pd.DataFrame): Training Set to be transformed
         X_test (pd.DataFrame): Test Set to be transformed
+        pipe_out_path (str): Path to which to save the pipeline.
 
     Returns:
         X_train, X_test: Both transformed datasets as np.arrays
@@ -59,6 +61,9 @@ def preprocess_data(
     # Use the pipeline on train and test set
     X_train = preprocess_pipe.fit_transform(X_train)
     X_test = preprocess_pipe.transform(X_test)
+
+    # Save preprocess_pipe to be reused
+    dump(preprocess_pipe, pipe_out_path)
 
     return X_train, X_test
 
@@ -77,6 +82,7 @@ if __name__ == "__main__":
     X_test_out_path = clf_model_conf["split_preprocess"]["paths"]["X_test_out_path"]
     y_train_out_path = clf_model_conf["split_preprocess"]["paths"]["y_train_out_path"]
     y_test_out_path = clf_model_conf["split_preprocess"]["paths"]["y_test_out_path"]
+    pipe_out_path = clf_model_conf["split_preprocess"]["paths"]["pipe_out_path"]
 
     # Get diabetes data set
     diabetes_df = pd.read_csv(input_data_path)
@@ -90,7 +96,9 @@ if __name__ == "__main__":
     )
 
     # Transform training and test data
-    X_train, X_test = preprocess_data(X_train=X_train, X_test=X_test)
+    X_train, X_test = preprocess_data(
+        X_train=X_train, X_test=X_test, pipe_out_path=pipe_out_path
+    )
 
     # Write data out
     np.savetxt(X_train_out_path, X_train, delimiter=",")
