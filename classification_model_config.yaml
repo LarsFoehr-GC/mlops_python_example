@@ -1,0 +1,60 @@
+preprocess_data:
+  cols_to_be_removed:
+    - "SkinThickness"
+  paths:
+    data_in_path: "data/diabetes_raw.csv"
+    data_out_path: "data/diabetes_raw_processed.csv"
+
+split_preprocess:
+  y_feature: "Outcome"
+  paths:
+    data_in_path: "data/diabetes_raw_processed.csv"
+    X_train_out_path: "data/X_train.csv"
+    X_test_out_path: "data/X_test.csv"
+    y_train_out_path: "data/y_train.csv"
+    y_test_out_path: "data/y_test.csv"
+
+model:
+  paths:
+    model_out_path: models/grid_search_cv.joblib
+  k_fold:
+    n_splits: 10
+  params:
+    penalty:
+      - "l2"
+    C:
+      - 0.01
+      - 0.05
+      - 0.1
+      - 0.2
+      - 0.3
+      - 0.4
+      - 0.5
+      - 0.6
+      - 0.7
+      - 0.8
+      - 0.9
+      - 1.0
+
+train:
+  paths:
+    model_in_path: models/grid_search_cv.joblib
+    X_train_in_path: data/X_train.csv
+    y_train_in_path: data/y_train.csv
+    model_out_path: models/model_trained.joblib
+
+predict:
+  paths:
+    model_in_path: models/model_trained.joblib
+    X_train_in_path: data/X_train.csv
+    X_test_in_path: data/X_test.csv
+    y_pred_train_out_path: data/y_pred_train.csv
+    y_pred_test_out_path: data/y_pred_test.csv
+
+evaluate:
+  paths:
+    y_train_in_path: data/y_train.csv
+    y_test_in_path: data/y_test.csv
+    y_pred_train_in_path: data/y_pred_train.csv
+    y_pred_test_in_path: data/y_pred_test.csv
+    results_out_path: results/metrics.json

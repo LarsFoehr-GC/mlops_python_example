@@ -1,38 +1,47 @@
 """ This modul contains the function(s) to predict the output of new data.
 
 """
-from sklearn.pipeline import Pipeline
-from typing import Dict
+from joblib import load
+from numpy import genfromtxt, savetxt
+import pandas as pd
 
-# Get predictions
-def get_prediction(
-    clf_model: Pipeline,
-    preg: int,
-    gluco: int,
-    bp: int,
-    ins: int,
-    bmi: float,
-    dpf: float,
-    age: int,
-) -> Dict:
-    """Get predictions for all input variables
+from util.logger import define_logger
+from util.read_yaml import read_yaml
 
-    Args:
-        preg (int): Number of pregnancies
-        gluco (int): Glucose level
-        bp (int): Blood pressure
-        ins (int): Insulin Level
-        bmi (float): Body mass index
-        dpf (float): Diabetes pedigree function
-        age (int): Age
+logger = define_logger()
 
-    Returns:
-        Dictionary containing predictions and probaility predictions.
+if __name__ == "__main__":
 
-    """
-    x = [[preg, gluco, bp, ins, bmi, dpf, age]]
+    logger.error("Model prediction started ...")
 
-    y = clf_model.predict(x)[0]  # just get single value
-    prob = clf_model.predict_proba(x)[0].tolist()  # send to list for return
+    # Get classification model config yaml file
+    clf_model_conf = read_yaml("classification_model_config.yaml")
 
-    return {"prediction": int(y), "probability": prob}
+    # Load the GridSearchCV
+    lr = load(clf_model_conf["predict"]["paths"]["model_in_path"])
+
+    # Get X_train and X_test
+    X_train = genfromtxt(
+        clf_model_conf["predict"]["paths"]["X_train_in_path"], delimiter=","
+    )
+    X_test = genfromtxt(
+        clf_model_conf["predict"]["paths"]["X_test_in_path"], delimiter=","
+    )
+
+    # Make predictions
+    y_pred_train = lr.predict(X_train)
+    y_pred_test = lr.predict(X_test)
+
+    # Save y_pred and y_pred_proba
+    savetxt(
+        clf_model_conf["predict"]["paths"]["y_pred_train_out_path"],
+        y_pred_train,
+        delimiter=",",
+    )
+    savetxt(
+        clf_model_conf["predict"]["paths"]["y_pred_test_out_path"],
+        y_pred_test,
+        delimiter=",",
+    )
+
+    logger.error("Model prediction finished!")

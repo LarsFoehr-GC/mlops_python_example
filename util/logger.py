@@ -17,7 +17,7 @@ def define_logger() -> logging.Logger:
     # Build logger
     logging.basicConfig(
         format="%(asctime)s; %(levelname)s - %(name)s - %(message)s",
-        level=logging.DEBUG,
+        level=logging.ERROR,
     )
 
     logger = logging.getLogger(__name__)

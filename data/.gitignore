@@ -1,2 +1,10 @@
-/diabetes.csv
-/diabetes_preprocessed.csv
+/diabetes_raw_processed.csv
+/diabetes_raw.csv
+/X_train.csv
+/X_test.csv
+/y_train.csv
+/y_test.csv
+/y_pred.csv
+/y_pred_proba.csv
+/y_pred_train.csv
+/y_pred_test.csv

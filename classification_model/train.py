@@ -1,49 +1,43 @@
-""" This module trains the data with model, that was defined in model.py.
+""" This module trains the grid search CV built in the former step.
 
-At the end the trained model is dumped as a joblib file.
+At the end the trained model will be saved to be used for prediction and evaluation.
 
 """
+from joblib import dump, load
+from numpy import genfromtxt
 
-import importlib.util
-import joblib
-import logging
-import os
-import sys
+from util.logger import define_logger
+from util.read_yaml import read_yaml
 
-# Build logger
-logging.basicConfig(
-    format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
-)
-logger = logging.getLogger(__name__)
-
-
-def module_from_file(module_name, file_path):
-    """This function gets a module from a specific file path.
-
-    Args:
-        module_name (str): Name of the module to be loaded.
-        file_path (str): Filepath which leads to the module.
-
-    Returns:
-        module: The module to be used.
-
-    """
-    spec = importlib.util.spec_from_file_location(module_name, file_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-# Set paths (TODO: Write a good config file)
-DATA_PATH = os.path.abspath(sys.argv[1])
-MODEL_PATH = sys.argv[2]
-
-sys.path.insert(1, MODEL_PATH)
-
-model = module_from_file("model", MODEL_PATH)
+logger = define_logger()
 
 if __name__ == "__main__":
-    logger.info("Training started ...")
-    pipeline, log_train = model.train(DATA_PATH)
-    joblib.dump(pipeline, "./models/model.joblib")
-    logger.info("Training finished!")
+
+    logger.error("Model training started ...")
+
+    # Get classification model config yaml file
+    clf_model_conf = read_yaml("classification_model_config.yaml")
+
+    # Load the GridSearchCV
+    lr_cv = load(clf_model_conf["train"]["paths"]["model_in_path"])
+
+    # Get X_train and y_train
+    X_train = genfromtxt(
+        clf_model_conf["train"]["paths"]["X_train_in_path"], delimiter=","
+    )
+    y_train = genfromtxt(
+        clf_model_conf["train"]["paths"]["y_train_in_path"],
+        delimiter=",",
+        skip_header=1,
+    )
+
+    # Fit the GridSearchCV
+    lr_cv.fit(X_train, y_train)
+
+    # Get the best possible model
+    lr_trained = lr_cv.best_estimator_
+
+    # Save the Grid Search as joblib to used in training step
+    dump(lr_trained, clf_model_conf["train"]["paths"]["model_out_path"])
+
+    logger.error("Model training finished!")

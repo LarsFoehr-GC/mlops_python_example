@@ -46,3 +46,136 @@ stages:
     - path: ./results/metrics.json
       md5: e5d85f65a4b4bc221f88b2cda65db202
       size: 110
+  preprocess:
+    cmd: python3 ./classification_model/process_raw_data.py
+    deps:
+    - path: classification_model/process_raw_data.py
+      md5: 6e46f97a2838b814fc2dfe54298a3958
+      size: 1685
+    - path: data/diabetes_raw.csv
+      md5: b43dd020fa775d93fced49f959c227ed
+      size: 23873
+    outs:
+    - path: ./data/diabetes_raw_processed.csv
+      md5: 86d746e594bbfe454b593dddfb75c884
+      size: 21203
+  split_preprocess:
+    cmd: python3 classification_model/split_preprocess.py
+    deps:
+    - path: classification_model/split_preprocess.py
+      md5: 4e2a7e69cf53fa45edd6eac4ff7d03f7
+      size: 3155
+    - path: data/diabetes_raw_processed.csv
+      md5: 86d746e594bbfe454b593dddfb75c884
+      size: 21203
+    outs:
+    - path: data/X_test.csv
+      md5: e1d82a260c6ed417781af371c3210543
+      size: 41372
+    - path: data/X_train.csv
+      md5: 8ffa2389be7a44c828d7d7a06f9875b5
+      size: 96017
+    - path: data/y_test.csv
+      md5: d81ff79e5fc1df2a347ced818a78e78b
+      size: 470
+    - path: data/y_train.csv
+      md5: 9d4504d5b7bff8fab6b44515aad9435a
+      size: 1082
+  model:
+    cmd: python3 classification_model/model.py
+    deps:
+    - path: classification_model/model.py
+      md5: 928cddf09a7f38663d387118b8b5ff1d
+      size: 1123
+    - path: classification_model/split_preprocess.py
+      md5: 4e2a7e69cf53fa45edd6eac4ff7d03f7
+      size: 3155
+    outs:
+    - path: models/grid_search_cv.joblib
+      md5: cb84115f22d2a4ac760c35cd75fa27a2
+      size: 730
+  train:
+    cmd: python3 classification_model/train.py
+    deps:
+    - path: classification_model/model.py
+      md5: 928cddf09a7f38663d387118b8b5ff1d
+      size: 1123
+    - path: classification_model/train.py
+      md5: ff66b6fd364239437424bfbfcbe8a9c5
+      size: 1202
+    - path: data/X_train.csv
+      md5: 8ffa2389be7a44c828d7d7a06f9875b5
+      size: 96017
+    - path: data/y_train.csv
+      md5: 9d4504d5b7bff8fab6b44515aad9435a
+      size: 1082
+    - path: models/grid_search_cv.joblib
+      md5: cb84115f22d2a4ac760c35cd75fa27a2
+      size: 730
+    outs:
+    - path: models/model_trained.joblib
+      md5: 285bf3c6fd925a9c3fa9bed013fe6e2b
+      size: 803
+  predict:
+    cmd: python3 classification_model/predict.py
+    deps:
+    - path: classification_model/predict.py
+      md5: 6e23fa5104b9f49b7c4e5fb217ba2648
+      size: 1248
+    - path: classification_model/train.py
+      md5: ff66b6fd364239437424bfbfcbe8a9c5
+      size: 1202
+    - path: data/X_test.csv
+      md5: e1d82a260c6ed417781af371c3210543
+      size: 41372
+    - path: data/X_train.csv
+      md5: 8ffa2389be7a44c828d7d7a06f9875b5
+      size: 96017
+    - path: models/model_trained.joblib
+      md5: 285bf3c6fd925a9c3fa9bed013fe6e2b
+      size: 803
+    outs:
+    - path: data/y_pred_test.csv
+      md5: 6811932c14f1bd44e458533a7851baf6
+      size: 5775
+    - path: data/y_pred_train.csv
+      md5: aec79d5a8fe0816574880b4167995be4
+      size: 13425
+  process_raw:
+    cmd: python3 classification_model/process_raw_data.py
+    deps:
+    - path: classification_model/process_raw_data.py
+      md5: d8c110fb7e66e56c5a2ddfdb5f1c5334
+      size: 1677
+    - path: data/diabetes_raw.csv
+      md5: b43dd020fa775d93fced49f959c227ed
+      size: 23873
+    outs:
+    - path: data/diabetes_raw_processed.csv
+      md5: 86d746e594bbfe454b593dddfb75c884
+      size: 21203
+  evaluate:
+    cmd: python3 classification_model/evaluate.py
+    deps:
+    - path: classification_model/evaluate.py
+      md5: fb0d342f4e947b6157fd153e82e15b0c
+      size: 2160
+    - path: classification_model/predict.py
+      md5: 6e23fa5104b9f49b7c4e5fb217ba2648
+      size: 1248
+    - path: data/y_pred_test.csv
+      md5: 6811932c14f1bd44e458533a7851baf6
+      size: 5775
+    - path: data/y_pred_train.csv
+      md5: aec79d5a8fe0816574880b4167995be4
+      size: 13425
+    - path: data/y_test.csv
+      md5: d81ff79e5fc1df2a347ced818a78e78b
+      size: 470
+    - path: data/y_train.csv
+      md5: 9d4504d5b7bff8fab6b44515aad9435a
+      size: 1082
+    outs:
+    - path: results/metrics.json
+      md5: f07242b48da4644649e0008763f525e2
+      size: 343
