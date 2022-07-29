@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # Get information from config yaml file
     cols_to_be_removed = clf_model_conf["preprocess_data"]["cols_to_be_removed"]
     input_data_path = clf_model_conf["preprocess_data"]["paths"]["data_in_path"]
-    output_data_path = clf_model_conf["preprocess_data"]["paths"]["data_in_path"]
+    output_data_path = clf_model_conf["preprocess_data"]["paths"]["data_out_path"]
 
     # Read input dataframe
     raw_df = pd.read_csv(input_data_path)

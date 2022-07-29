@@ -1,11 +1,11 @@
 stages:
-  preprocess:
-    cmd: python3 ./classification_model/process_raw_data.py
+  process_raw:
+    cmd: python3 classification_model/process_raw_data.py
     deps:
     - classification_model/process_raw_data.py
     - data/diabetes_raw.csv
     outs:
-    - ./data/diabetes_raw_processed.csv
+    - data/diabetes_raw_processed.csv
   split_preprocess:
     cmd: python3 classification_model/split_preprocess.py
     deps:
@@ -18,18 +18,42 @@ stages:
     - data/y_train.csv
   model:
     cmd: python3 classification_model/model.py
+    deps:
+    - classification_model/model.py
+    - classification_model/split_preprocess.py
     outs:
     - models/grid_search_cv.joblib
   train:
     cmd: python3 classification_model/train.py
     deps:
+    - classification_model/model.py
+    - classification_model/train.py
     - data/X_train.csv
     - data/y_train.csv
+    - models/grid_search_cv.joblib
+    outs:
+    - models/model_trained.joblib:
+        cache: false
   predict:
     cmd: python3 classification_model/predict.py
     deps:
+    - classification_model/predict.py
+    - classification_model/train.py
     - data/X_test.csv
     - data/X_train.csv
+    - models/model_trained.joblib
     outs:
     - data/y_pred_test.csv
     - data/y_pred_train.csv
+  evaluate:
+    cmd: python3 classification_model/evaluate.py
+    deps:
+    - classification_model/evaluate.py
+    - classification_model/predict.py
+    - data/y_pred_test.csv
+    - data/y_pred_train.csv
+    - data/y_test.csv
+    - data/y_train.csv
+    metrics:
+    - results/metrics.json:
+        cache: false

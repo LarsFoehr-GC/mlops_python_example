@@ -3,7 +3,7 @@ preprocess_data:
     - "SkinThickness"
   paths:
     data_in_path: "data/diabetes_raw.csv"
-    data_in_path: "data/diabetes_raw_processed.csv"
+    data_out_path: "data/diabetes_raw_processed.csv"
 
 split_preprocess:
   y_feature: "Outcome"
@@ -57,4 +57,4 @@ evaluate:
     y_test_in_path: data/y_test.csv
     y_pred_train_in_path: data/y_pred_train.csv
     y_pred_test_in_path: data/y_pred_test.csv
-    results_out_path:
+    results_out_path: results/metrics.json

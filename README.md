@@ -22,12 +22,30 @@ To set PYTHONPATH inside venv: export PYTHONPATH=$PYTHONPATH:$(pwd)
 ## Build of the pipeline
 The following commands were used to build the pipeline:
 
-- dvc run -n preprocess -d classification_model/process_raw_data.py -d data/diabetes_raw.csv -o ./data/diabetes_raw_processed.csv python3 ./classification_model/process_raw_data.py
-- dvc run -n split_preprocess -d classification_model/split_preprocess.py -d data/diabetes_raw_processed.csv -o data/X_train.csv -o data/X_test.csv -o data/y_train.csv -o data/y_test.csv python3 classification_model/split_preprocess.py
-- dvc run -n model -o models/grid_search_cv.joblib python3 classification_model/model.py
-- dvc run -n train -d data/X_train.csv -d data/y_train.csv python3 classification_model/train.py
-- dvc run -n predict -d data/X_train.csv -d data/X_test.csv -o data/y_pred_train.csv -o data/y_pred_test.csv python3 classification_model/predict.py
-
+#### Process raw daata
+```
+dvc run -n process_raw -d classification_model/process_raw_data.py -d data/diabetes_raw.csv -o data/diabetes_raw_processed.csv python3 classification_model/process_raw_data.py
+```
+#### Split data preprocess
+```
+dvc run -n split_preprocess -d classification_model/split_preprocess.py -d data/diabetes_raw_processed.csv -o data/X_train.csv -o data/X_test.csv -o data/y_train.csv -o data/y_test.csv python3 classification_model/split_preprocess.py
+```
+#### Build the model
+```
+dvc run -n model -d classification_model/split_preprocess.py -d classification_model/model.py -o models/grid_search_cv.joblib python3 classification_model/model.py
+```
+#### Train the model
+```
+dvc run -n train -d classification_model/model.py -d classification_model/train.py -d models/grid_search_cv.joblib -d data/X_train.csv -d data/y_train.csv -O models/model_trained.joblib python3 classification_model/train.py
+```
+#### Predict
+```
+dvc run -n predict -d classification_model/train.py -d classification_model/predict.py -d models/model_trained.joblib -d data/X_train.csv -d data/X_test.csv -o data/y_pred_train.csv -o data/y_pred_test.csv python3 classification_model/predict.py
+```
+#### Evaluation
+```
+dvc run -n evaluate -d classification_model/predict.py -d classification_model/evaluate.py -d data/y_train.csv -d data/y_pred_train.csv -d data/y_test.csv -d data/y_pred_test.csv -M results/metrics.json python3 classification_model/evaluate.py
+```
 ## Experiment
 - dvc pull
 - dvc run ...
