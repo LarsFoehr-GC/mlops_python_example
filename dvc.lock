@@ -81,3 +81,34 @@ stages:
     - path: data/y_train.csv
       md5: 9d4504d5b7bff8fab6b44515aad9435a
       size: 1082
+  model:
+    cmd: python3 classification_model/model.py
+    outs:
+    - path: models/grid_search_cv.joblib
+      md5: cb84115f22d2a4ac760c35cd75fa27a2
+      size: 730
+  train:
+    cmd: python3 classification_model/train.py
+    deps:
+    - path: data/X_train.csv
+      md5: 8ffa2389be7a44c828d7d7a06f9875b5
+      size: 96017
+    - path: data/y_train.csv
+      md5: 9d4504d5b7bff8fab6b44515aad9435a
+      size: 1082
+  predict:
+    cmd: python3 classification_model/predict.py
+    deps:
+    - path: data/X_test.csv
+      md5: e1d82a260c6ed417781af371c3210543
+      size: 41372
+    - path: data/X_train.csv
+      md5: 8ffa2389be7a44c828d7d7a06f9875b5
+      size: 96017
+    outs:
+    - path: data/y_pred_test.csv
+      md5: 6811932c14f1bd44e458533a7851baf6
+      size: 5775
+    - path: data/y_pred_train.csv
+      md5: aec79d5a8fe0816574880b4167995be4
+      size: 13425

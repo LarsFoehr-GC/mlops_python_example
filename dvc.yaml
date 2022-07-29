@@ -16,3 +16,20 @@ stages:
     - data/X_train.csv
     - data/y_test.csv
     - data/y_train.csv
+  model:
+    cmd: python3 classification_model/model.py
+    outs:
+    - models/grid_search_cv.joblib
+  train:
+    cmd: python3 classification_model/train.py
+    deps:
+    - data/X_train.csv
+    - data/y_train.csv
+  predict:
+    cmd: python3 classification_model/predict.py
+    deps:
+    - data/X_test.csv
+    - data/X_train.csv
+    outs:
+    - data/y_pred_test.csv
+    - data/y_pred_train.csv

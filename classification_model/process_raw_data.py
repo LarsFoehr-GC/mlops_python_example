@@ -40,9 +40,9 @@ if __name__ == "__main__":
     clf_model_conf = read_yaml("classification_model_config.yaml")
 
     # Get information from config yaml file
-    input_data_path = clf_model_conf["preprocess_data"]["data_in_path"]
     cols_to_be_removed = clf_model_conf["preprocess_data"]["cols_to_be_removed"]
-    output_data_path = clf_model_conf["preprocess_data"]["data_in_out"]
+    input_data_path = clf_model_conf["preprocess_data"]["paths"]["data_in_path"]
+    output_data_path = clf_model_conf["preprocess_data"]["paths"]["data_in_path"]
 
     # Read input dataframe
     raw_df = pd.read_csv(input_data_path)

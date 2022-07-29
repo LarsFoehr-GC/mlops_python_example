@@ -71,12 +71,12 @@ if __name__ == "__main__":
     clf_model_conf = read_yaml("classification_model_config.yaml")
 
     # Get information from config yaml file
-    input_data_path = clf_model_conf["split_preprocess"]["data_in_path"]
     y_feature = clf_model_conf["split_preprocess"]["y_feature"]
-    X_train_out_path = clf_model_conf["split_preprocess"]["X_train_out_path"]
-    X_test_out_path = clf_model_conf["split_preprocess"]["X_test_out_path"]
-    y_train_out_path = clf_model_conf["split_preprocess"]["y_train_out_path"]
-    y_test_out_path = clf_model_conf["split_preprocess"]["y_test_out_path"]
+    input_data_path = clf_model_conf["split_preprocess"]["paths"]["data_in_path"]
+    X_train_out_path = clf_model_conf["split_preprocess"]["paths"]["X_train_out_path"]
+    X_test_out_path = clf_model_conf["split_preprocess"]["paths"]["X_test_out_path"]
+    y_train_out_path = clf_model_conf["split_preprocess"]["paths"]["y_train_out_path"]
+    y_test_out_path = clf_model_conf["split_preprocess"]["paths"]["y_test_out_path"]
 
     # Get diabetes data set
     diabetes_df = pd.read_csv(input_data_path)

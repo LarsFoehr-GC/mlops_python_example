@@ -10,7 +10,7 @@ import logging
 import os
 from typing import Dict
 
-from classification_model.predict import get_prediction
+from diabetes_api.app.predict_api import get_prediction
 from diabetes_api.app import __version__ as app_version
 from diabetes_api.app.config import PROJECT_NAME
 from diabetes_api.schemas import Health, ModelParams

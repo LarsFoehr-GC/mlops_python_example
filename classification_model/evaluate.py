@@ -1,47 +1,42 @@
-""" This module evaluates the trained model
+""" This module contrains the model evaluation.
+
 """
-import importlib.util
-import json
-import joblib
-import logging
-import os
-import sys
+from joblib import load
+from numpy import genfromtxt, savetxt
+import pandas as pd
 
-# Build logger
-logging.basicConfig(
-    format="%(asctime)s; %(levelname)s - %(name)s - %(message)s", level=logging.DEBUG
-)
-logger = logging.getLogger(__name__)
+from util.logger import define_logger
+from util.read_yaml import read_yaml
 
-# Set variables
-DATA_PATH = os.path.abspath(sys.argv[1])
-MODEL_PATH = sys.argv[2]
-JOBLIB_PATH = sys.argv[3]
+logger = define_logger()
 
-sys.path.insert(1, MODEL_PATH)
+if __name__ == "__main__":
 
+    logger.error("Model prediction started ...")
 
-def module_from_file(module_name, file_path):
-    """This function gets a module from a specific file path.
+    # Get classification model config yaml file
+    clf_model_conf = read_yaml("classification_model_config.yaml")
 
-    Args:
-        module_name (str): Name of the module to be loaded.
-        file_path (str): Filepath which leads to the module.
+    # Load the GridSearchCV
+    lr = load(clf_model_conf["predict"]["paths"]["model_in_path"])
 
-    Returns:
-        module: The module to be used.
+    # Get X_train and y_train
+    X_test = genfromtxt(
+        clf_model_conf["predict"]["paths"]["X_test_in_path"], delimiter=","
+    )
 
-    """
-    spec = importlib.util.spec_from_file_location(module_name, file_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    # Make predictions
+    y_pred = lr.predict(X_test)
+    y_pred_proba = lr.predict_proba(X_test)[:, 1]
 
+    # Save y_pred and y_pred_proba
+    savetxt(
+        clf_model_conf["predict"]["paths"]["y_pred_out_path"], y_pred, delimiter=","
+    )
+    savetxt(
+        clf_model_conf["predict"]["paths"]["y_pred_prob_out_path"],
+        y_pred_proba,
+        delimiter=",",
+    )
 
-with open("./results/metrics.json", "w") as outfile:
-    logger.info("Evaluation started ...")
-    model = module_from_file("model", MODEL_PATH)
-    pipeline = joblib.load(JOBLIB_PATH)
-    log_eval = model.evaluate(DATA_PATH, pipeline)
-    json.dump(log_eval["metrics"], outfile)
-    logger.info("Evaluation finished!")
+    logger.error("Model prediction finished!")

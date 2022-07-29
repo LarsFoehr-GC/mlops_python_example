@@ -4,3 +4,7 @@
 /X_test.csv
 /y_train.csv
 /y_test.csv
+/y_pred.csv
+/y_pred_proba.csv
+/y_pred_train.csv
+/y_pred_test.csv
