@@ -17,10 +17,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: DVC Pull
-      run:
-        dvc pull
           
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
