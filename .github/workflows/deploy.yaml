@@ -24,6 +24,12 @@ jobs:
         login-server: mlopspythonexample.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
+        
+    - name: DVC PULL
+      run: 
+        pip install requests
+        pip install dvc
+        dvc pull
 
 
     - name: Build and push container image to registry
