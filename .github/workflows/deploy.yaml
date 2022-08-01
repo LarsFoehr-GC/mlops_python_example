@@ -25,10 +25,15 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
         
-    - name: DVC PULL
+        
+    - name: Installings
       run: 
         pip install requests
         pip install dvc
+    
+    
+    - name: DVC PULL
+      run:
         dvc pull
 
 
