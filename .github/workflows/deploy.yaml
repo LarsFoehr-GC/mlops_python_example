@@ -17,24 +17,14 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
+
+
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
       with:
         login-server: mlopspythonexample.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-        
-        
-    - name: Installings
-      run: 
-        pip install requests
-        pip install dvc[azure]
-    
-    
-    - name: DVC PULL
-      run:
-        dvc pull
 
 
     - name: Build and push container image to registry
