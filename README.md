@@ -51,20 +51,15 @@ dvc run -n evaluate -d classification_model/predict.py -d classification_model/e
 - dvc run ...
 - dvc push
 
-## To Do's:
-- pre-commit with mypy but only for important modules
-- Explain DVC in README
-- Explain whole workflow
-- Write better tests
-- Think about Model monitoring
-- Think about automatic retraining the model
-- Refactoring: Write better modules and functions!
-- Better work with paths!
-
 # Fast API
-https://fastapi.tiangolo.com/#run-it
+- https://fastapi.tiangolo.com/#run-it
+- https://fastapi.tiangolo.com/deployment/docker/
 
-https://fastapi.tiangolo.com/deployment/docker/
+### Call
+
+```
+uvicorn diabetes_api.app.main:app --reload
+```
 
 # Docker
 Fast API is called via Docker. The specification of the Docker Image can be found in the Dockerfile.
@@ -78,3 +73,13 @@ docker run -d --name mlops_py_container -p 80:80 mlops_py_image
 
 # Azure Deployment
 https://towardsdatascience.com/deploy-fastapi-on-azure-with-github-actions-32c5ab248ce3
+
+# To Do's:
+- pre-commit with mypy but only for important modules
+- Explain DVC in README
+- Explain whole workflow
+- Write better tests
+- Think about Model monitoring
+- Think about automatic retraining the model
+- Refactoring: Write better modules and functions!
+- Better work with paths!

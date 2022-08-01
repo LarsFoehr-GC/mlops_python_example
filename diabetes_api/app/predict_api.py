@@ -1,10 +1,32 @@
 """ This module contains the specific prediction function for FastAPI.
 
 """
-
+import glob
+from joblib import load
+import numpy as np
+import pandas as pd
 from typing import Dict
 
-# Get predictions for API
+
+def preprocess_data_api(new_data: pd.DataFrame) -> np.array:
+    """Preprocess new incoming data to be predicted.
+
+    Args:
+        new_data (pd.DataFrame): New data to be predicted.
+
+    Returns:
+        new_data: Preprocessed data as np.arrray.
+
+    """
+
+    PIPE_PATH = glob.glob("**/preprocess_pipe_trained.joblib", recursive=True)[0]
+    preprocess_pipe = load(PIPE_PATH)
+
+    new_data = preprocess_pipe.transform(new_data)
+
+    return new_data
+
+
 def get_prediction_api(
     clf_model,
     preg: int,
@@ -30,9 +52,23 @@ def get_prediction_api(
         Dictionary containing predictions and probaility predictions.
 
     """
-    x = [[preg, gluco, bp, ins, bmi, dpf, age]]
 
-    y = clf_model.predict(x)[0]  # just get single value
-    prob = clf_model.predict_proba(x)[0].tolist()  # send to list for return
+    # Build DataFrame from new data.
+    X = pd.DataFrame(
+        {
+            "Pregnancies": [preg],
+            "Glucose": [gluco],
+            "BloodPressure": [bp],
+            "Insulin": [ins],
+            "BMI": [bmi],
+            "DiabetesPedigreeFunction": [dpf],
+            "Age": [age],
+        }
+    )
+
+    X = preprocess_data_api(new_data=X)
+
+    y = clf_model.predict(X)[0]  # just get single value
+    prob = clf_model.predict_proba(X)[0].tolist()  # send to list for return
 
     return {"prediction": int(y), "probability": prob}
