@@ -34,7 +34,7 @@ Right now there are three pages.
 
 * **Root** : Gives feedback whether or not the API works.
 * **/version** : Shows version of the API and the model.
-* **/metrics : Shows current training and test evaluation metrics.
+* **/metrics** : Shows current training and test evaluation metrics.
 * **/predict** : Prediction site.
 """
 

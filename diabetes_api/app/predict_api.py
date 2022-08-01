@@ -4,15 +4,27 @@
 import glob
 from joblib import load
 import numpy as np
+import pandas as pd
 from typing import Dict
 
 
-def preprocess_data_api(new_data: np.array) -> np.array:
+def preprocess_data_api(new_data: pd.DataFrame) -> np.array:
+    """Preprocess new incoming data to be predicted.
+
+    Args:
+        new_data (pd.DataFrame): New data to be predicted.
+
+    Returns:
+        new_data: Preprocessed data as np.arrray.
+
+    """
 
     PIPE_PATH = glob.glob("**/preprocess_pipe_trained.joblib", recursive=True)[0]
     preprocess_pipe = load(PIPE_PATH)
 
     new_data = preprocess_pipe.transform(new_data)
+
+    return new_data
 
 
 def get_prediction_api(
@@ -41,10 +53,22 @@ def get_prediction_api(
 
     """
 
-    x = np.array([preg, gluco, bp, ins, bmi, dpf, age])
-    x = preprocess_data_api(x)
+    # Build DataFrame from new data.
+    X = pd.DataFrame(
+        {
+            "Pregnancies": [preg],
+            "Glucose": [gluco],
+            "BloodPressure": [bp],
+            "Insulin": [ins],
+            "BMI": [bmi],
+            "DiabetesPedigreeFunction": [dpf],
+            "Age": [age],
+        }
+    )
 
-    y = clf_model.predict(x)[0]  # just get single value
-    prob = clf_model.predict_proba(x)[0].tolist()  # send to list for return
+    X = preprocess_data_api(new_data=X)
+
+    y = clf_model.predict(X)[0]  # just get single value
+    prob = clf_model.predict_proba(X)[0].tolist()  # send to list for return
 
     return {"prediction": int(y), "probability": prob}
