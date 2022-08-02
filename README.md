@@ -1,4 +1,4 @@
-# mlops_python_example
+# MLOps Python Example
 Example MLOps workflow with Python.
 
 # Overview
@@ -164,3 +164,6 @@ Here are three Tutorial which can be used for orientation:
 
 ## Automatic Model Retraining
 As mentioned above we need a trigger point, at which to retrain the model. This could be done via model monitoring and then start DVC again via dvc repro.
+
+## Project Template with Cookiecutter
+If we reach a state, which base could be reused, than we should build a reusable project template with [cookiecutter](https://github.com/cookiecutter/cookiecutter).
