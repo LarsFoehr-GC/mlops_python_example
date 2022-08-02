@@ -14,7 +14,7 @@ On the model side DVC is used to build an ML Workflow. Each step in the model bu
 The API over which the model can be called is built with FastAPI. The API is inside a docker container, which is hosted via Microsoft Azure.
 
 ## CI/CD
-Github is used as Code repository as well as for CI/CD. With each release, the new API (and model) redeployed on Microsoft Azure.
+Github is used as Code repository as well as for CI/CD. With each release, the new API (and model) redeployed on Microsoft Azure. Furthermore with each Push into main Unit tests are run.
 
 # Configuration
 
